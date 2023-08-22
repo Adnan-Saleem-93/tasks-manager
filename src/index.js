@@ -1,17 +1,61 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React, {lazy, Suspense} from 'react'
+import ReactDOM from 'react-dom/client'
+import './index.css'
+import App from './App'
+import {RouterProvider, createBrowserRouter} from 'react-router-dom'
+import LoadingPage from './components/pages/LoadingPage'
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const TasksPage = lazy(() => import('./components/pages/TasksPage/index.jsx'))
+const NotFoundPage = lazy(() => import('./components/pages/NotFoundPage/index.jsx'))
+const ErrorPage = lazy(() => import('./components/pages/ErrorPage/index.jsx'))
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: (
+      <Suspense fallback={<LoadingPage />}>
+        <TasksPage />
+      </Suspense>
+    ),
+    errorElement: (
+      <Suspense fallback={<LoadingPage />}>
+        <ErrorPage />
+      </Suspense>
+    )
+  },
+  {
+    path: '/tasks',
+    element: (
+      <Suspense fallback={<LoadingPage />}>
+        <TasksPage />
+      </Suspense>
+    ),
+    errorElement: (
+      <Suspense fallback={<LoadingPage />}>
+        <ErrorPage />
+      </Suspense>
+    )
+  },
+  {
+    path: '*',
+    element: (
+      <Suspense fallback={<LoadingPage />}>
+        <NotFoundPage />
+      </Suspense>
+    ),
+    errorElement: (
+      <Suspense fallback={<LoadingPage />}>
+        <ErrorPage />
+      </Suspense>
+    )
+  }
+])
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
-    <App />
+    <App>
+      <RouterProvider router={router} />
+    </App>
   </React.StrictMode>
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+)
