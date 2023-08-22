@@ -1,8 +1,5 @@
 import React from 'react'
-import {TextField, Box} from '@mui/material'
-import CustomTooltip from '../CustomTooltip'
-import IconButton from '../IconButton'
-import ErrorIcon from '@mui/icons-material/Error'
+import {TextField} from '@mui/material'
 
 const InputComponent = ({
   value,
